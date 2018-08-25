@@ -6,6 +6,7 @@ import morgan from 'morgan';
 // Import models and routes
 // import Game from './app/models/game';
 import { getGames, getGameById, postGame, deleteGame } from './app/routes/game';
+import { register } from './app/routes/user';
 
 // import mongodb config
 import { mongodbUser } from './app/config/mongodb';
@@ -45,16 +46,18 @@ app.use((req, res, next) => {
 });
 
 // API routes
-app.route('/games')
-    // create a game
-    .post(postGame)
-    // get all games
-    .get(getGames);
-app.route('/games/:id')
-    // get a single game
-    .get(getGameById)
-    // remove a single game
-    .delete(deleteGame);
+// app.route('/games')
+//     // create a game
+//     .post(postGame)
+//     // get all games
+//     .get(getGames);
+// app.route('/games/:id')
+//     // get a single game
+//     .get(getGameById)
+//     // remove a single game
+//     .delete(deleteGame);
+app.route('/api/auth/register')
+    .post(register);
 
 // Send back homepage for other requests
 app.route('*').get((req, res) => {
