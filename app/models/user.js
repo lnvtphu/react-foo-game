@@ -11,8 +11,6 @@ const userSchema = new Schema(
         displayName: String,
         firstName: String,
         lastName: String,
-        name: String,
-        picture: String,
         status: String,
         createDate: {
             type: Date,
