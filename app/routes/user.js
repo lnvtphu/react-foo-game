@@ -7,7 +7,7 @@ import { verifyTokenKey } from '../config/token';
 // import handle validate data request
 import { validate } from '../utils/validateData';
 // import schema for validate
-import { registerSchema, loginSchema } from '../utils/schemaValidate';
+import { registerSchema, loginSchema, updateUserSchema } from '../utils/schemaValidate';
 
 const register = (req, res) => {
     // validate request data
@@ -113,16 +113,40 @@ const login = (req, res) => {
 
 // logout
 const logout = (req, res) => {
-    
+    res.status(200).send(
+        { statusCode: 200, auth: false, token: null, message: "Successfully logout." }
+    );
 }
 
 //update info
 const updateUser = (req, res) => {
-
+    const result = validate(req.body, updateUserSchema);
+    if (!result.valid) {
+        return res.status(400).send({
+            statusCode: 400,
+            message: 'Bad request.',
+            error: result.error
+        });
+    }
+    res.status(200).send({
+        passed: true
+    })
+    // User.findByIdAndUpdate(req.params.id, req.body, { new: true, password: 0 }, function (err, user) {
+    //     if (err) return res.status(500).send(
+    //         {
+    //             statusCode: 500,
+    //             message: "There was a problem updating the user.",
+    //             error: err
+    //         }
+    //     );
+    //     res.status(200).send(
+    //         { statusCode: 200, message: "Successfully updated.", data: user }
+    //     );
+    // });
 }
 // delete user
 const deleteUser = (req, res) => {
-    
+
 }
 
-export { register, login };
+export { register, login, logout, updateUser, deleteUser };

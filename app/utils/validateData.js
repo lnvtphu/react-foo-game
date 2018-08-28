@@ -7,14 +7,8 @@ import * as tv4 from 'tv4';
 const handleError = (data) => {
 
     return data.errors.map((error) => {
-        const {
-            message = null,
-            params: {
-                message: messageCustom = null
-            } = {}
-        } = error;
-
-        return messageCustom ? messageCustom : message;
+        delete error.stack;
+        return error;
     });
 }
 const validate = (data, schema) => {

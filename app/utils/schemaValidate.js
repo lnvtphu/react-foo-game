@@ -22,12 +22,6 @@ const registerSchema = {
         },
         status: {
             type: 'number'
-        },
-        creatdate: {
-            type: 'string'
-        },
-        updatedDate: {
-            type: 'string'
         }
     },
     required: ["email", "password", 'displayName', 'firstName', 'lastName']
@@ -47,4 +41,21 @@ const loginSchema = {
     },
     required: ["email", "password"]
 }
-export { registerSchema, loginSchema };
+// update user
+const updateUserSchema = {
+    title: 'Updtae user schema',
+    type: 'object',
+    properties: {
+        displayName: {
+            type: 'string'
+        },
+        firstName: {
+            type: 'string'
+        },
+        lastName: {
+            type: 'string'
+        }
+    }
+}
+
+export { registerSchema, loginSchema, updateUserSchema };
