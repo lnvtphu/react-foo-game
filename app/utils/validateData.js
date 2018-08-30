@@ -1,30 +1,18 @@
 
-// import custom format tv4
-import { emailFormat, passwordFormat } from '../utils/customFormatTV4';
+import Ajv from 'ajv';
 
-import * as tv4 from 'tv4';
+const handleError = (errors) => {
+    errors.map((error) => {
 
-const handleError = (data) => {
-
-    return data.errors.map((error) => {
-        delete error.stack;
-        return error;
     });
+    return errors;
 }
 const validate = (data, schema) => {
-    const formats = {
-        email: emailFormat,
-        password: passwordFormat
-    }
-
-    tv4.addFormat(formats);
-    const result = tv4.validateMultiple(data, schema);
-    const response = {
-        valid: result.valid,
-        error: handleError(result)
-    }
-
-    return response;
+    const ajv = new Ajv({allErrors: true});
+    const validator = ajv.compile(schema);
+    const valid = validator(data);
+    const errors = valid ? [] : handleError(validator.errors)
+    return { valid, errors };
 }
 
 export { validate };

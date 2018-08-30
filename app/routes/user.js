@@ -121,6 +121,7 @@ const logout = (req, res) => {
 //update info
 const updateUser = (req, res) => {
     const result = validate(req.body, updateUserSchema);
+    
     if (!result.valid) {
         return res.status(400).send({
             statusCode: 400,

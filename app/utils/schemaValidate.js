@@ -8,8 +8,7 @@ const registerSchema = {
             format: 'email'
         },
         password: {
-            type: 'string',
-            format: 'password'
+            type: 'string'
         },
         displayName: {
             type: 'string'
@@ -55,7 +54,8 @@ const updateUserSchema = {
         lastName: {
             type: 'string'
         }
-    }
+    },
+    additionalProperties: false,
 }
 
 export { registerSchema, loginSchema, updateUserSchema };
