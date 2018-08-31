@@ -6,7 +6,7 @@
   "author": "Foo Le",
   "license": "MIT",
   "scripts": {
-    "api": "babel-node server.js"
+    "start": "babel-node server.js"
   },
   "dependencies": {
     "ajv": "^6.5.3",
