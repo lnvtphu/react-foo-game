@@ -11,15 +11,11 @@ const userSchema = new Schema(
         displayName: String,
         firstName: String,
         lastName: String,
-        status: String,
-        createDate: {
-            type: Date,
-            default: Date.now
-        },
-        updatedDate: {
-            type: Date,
-            default: Date.now
-        }
+        status: String
+    },
+    {
+        timestamps: { createdAt: 'createdAt' },
+        timestamps: { updatedAt: 'updatedAt' }
     }
 );
 

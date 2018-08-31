@@ -16,7 +16,7 @@ const register = (req, res) => {
         return res.status(400).send({
             statusCode: 400,
             message: 'Bad request.',
-            error: result.error
+            errors: result.errors
         });
     }
 
@@ -25,7 +25,7 @@ const register = (req, res) => {
         if (err) return res.status(500).send({
             statusCode: 500,
             message: 'Error on the server.',
-            error: err
+            errors: err
         });
         if (user) return res.status(409).send({
             statusCode: 409,
@@ -33,17 +33,14 @@ const register = (req, res) => {
         });
         // hass password
         const hashedPassword = hashSync(req.body.password, 8);
+        req.body.password = hashedPassword;
         // create user on mongodb
-        User.create({
-            displayName: req.body.displayName,
-            email: req.body.email,
-            password: hashedPassword
-        },
+        User.create( req.body,
             (err, user) => {
                 if (err) return res.status(500).send({
                     statusCode: 500,
                     message: "There was a problem finding the user.",
-                    error: err
+                    errors: err
                 });
 
                 // if user is registered without errors
@@ -71,7 +68,7 @@ const login = (req, res) => {
         return res.status(400).send({
             statusCode: 400,
             message: 'Bad request.',
-            error: result.error
+            errors: result.errors
         });
     }
     // find the user base on email
@@ -79,7 +76,7 @@ const login = (req, res) => {
         if (err) return res.status(500).send({
             statusCode: 500,
             message: 'Error on the server.',
-            error: error
+            errors: error
         });
         if (!user) return res.status(401).send({
             statusCode: 401,
@@ -126,28 +123,32 @@ const updateUser = (req, res) => {
         return res.status(400).send({
             statusCode: 400,
             message: 'Bad request.',
-            error: result.error
+            errors: result.errors
         });
     }
-    res.status(200).send({
-        passed: true
-    })
-    // User.findByIdAndUpdate(req.params.id, req.body, { new: true, password: 0 }, function (err, user) {
-    //     if (err) return res.status(500).send(
-    //         {
-    //             statusCode: 500,
-    //             message: "There was a problem updating the user.",
-    //             error: err
-    //         }
-    //     );
-    //     res.status(200).send(
-    //         { statusCode: 200, message: "Successfully updated.", data: user }
-    //     );
-    // });
+    User.findByIdAndUpdate(req.params.id, req.body, { new: true, fields: {password: 0} }, function (err, user) {
+        if (err) return res.status(500).send(
+            {
+                statusCode: 500,
+                message: "There was a problem updating the user.",
+                error: err
+            }
+        );
+        res.status(200).send(
+            { statusCode: 200, message: "Successfully updated.", data: user }
+        );
+    });
 }
 // delete user
 const deleteUser = (req, res) => {
-
+    User.findByIdAndRemove(req.params.id, function (err, user) {
+        if (err) return res.status(500).send(
+            { statusCode: 500, message: "There was a problem deleting the user." }
+        );
+        res.status(200).send(
+            { statusCode: 200, message: "User: " + user.email + " was deleted." }
+        );
+    });
 }
 
 export { register, login, logout, updateUser, deleteUser };

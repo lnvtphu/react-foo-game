@@ -6,7 +6,7 @@ import morgan from 'morgan';
 // Import models and routes
 // import Game from './app/models/game';
 import { getGames, getGameById, postGame, deleteGame } from './app/routes/game';
-import { register, login, logout, updateUser } from './app/routes/user';
+import { register, login, logout, updateUser, deleteUser } from './app/routes/user';
 // verify token for some api
 import { verifyToken } from './app/utils/verifyToken';
 
@@ -48,20 +48,11 @@ app.use((req, res, next) => {
 });
 
 // API routes
-// app.route('/games')
-//     // create a game
-//     .post(postGame)
-//     // get all games
-//     .get(getGames);
-// app.route('/games/:id')
-//     // get a single game
-//     .get(getGameById)
-//     // remove a single game
-//     .delete(deleteGame);
 app.route('/api/auth/register').post(register);
 app.route('/api/auth/login').post(login);
 app.route('/api/auth/logout').get(verifyToken, logout);
-app.route('/api/user/:id').put(verifyToken, updateUser);
+app.route('/api/user/:id').put(verifyToken, updateUser)
+    .delete(verifyToken, deleteUser);
 
 // Send back homepage for other requests
 app.route('*').get((req, res) => {
